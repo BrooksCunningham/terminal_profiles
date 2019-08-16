@@ -5,5 +5,5 @@ PS1="$PS1\n"
 
 # Functions
 function ipinfo {
-  curl https://ipinfo.com/$1
+  curl https://ipinfo.io/$1
 }
