@@ -76,7 +76,7 @@ function orginfo {
 }
 
 function curlqa {
-	echo 'curl -ik -sD - -o /dev/null --resolve '$1':443:127.0.0.1 http://'$1':81  -A "distilqa" -H "host: '$1'"'
+	echo 'curl -ik -sD - -o /dev/null --resolve '$1':443:127.0.0.1 http://'$1':81 -H "host: '$1'"'
 }
 
 function chhost {
