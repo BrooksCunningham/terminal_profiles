@@ -21,6 +21,20 @@ function ddoghostname {
 	curl -s "https://app.datadoghq.com/api/v1/hosts?api_key=${DATADOG_ORG_API_KEY}&application_key=${DATADOG_APPLICATION_API_KEY}&filter=$1" | jq '[.host_list[] | .name , .tags_by_source.Users]' -r
 }
 
+function dlsite {
+	wget \
+	     --recursive \
+	     --no-clobber \
+	     --page-requisites \
+	     --html-extension \
+	     --convert-links \
+	     --restrict-file-names=windows \
+	     --domains website.org \
+	     --no-parent \
+		 $1
+
+}
+
 function nct {
         echo "nc -vz -w 5 $1 $2"
 	nc -vz -w 5 $1 $2
@@ -44,25 +58,43 @@ function cnvdate {
 
 
 function chkcrt {
-echo "---------------------------"
-echo "Certificate Valid Dates"
-echo "---------------------------"
-echo | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -dates
-echo "---------------------------"
-echo "Certificate CN and DNS Info"
-echo "---------------------------"
-echo | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -text | grep DNS:
+    echo "Checking server ${1}"
+    echo "---------------------------"
+    echo "Certificate Valid Dates"
+    echo "---------------------------"
+    true | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -dates
+    echo "---------------------------"
+    echo "Certificate CN and DNS Info"
+    echo "---------------------------"
+    true | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -text | grep DNS:
+    echo "---------------------------"
+    echo "Certificate issuer"
+    echo "---------------------------"
+    true | openssl s_client -connect $1:443 2>/dev/null | openssl x509 -noout -issuer
+    echo "---------------------------"
+    echo "Certificate Verify"
+    echo "---------------------------"
+    true | openssl s_client -connect $1:443 2>/dev/null -verify_hostname $1 | grep Verify
 }
 
 function chkcrtsni {
-echo "---------------------------"
-echo "Certificate Valid Dates"
-echo "---------------------------"
-echo | openssl s_client -connect $1:443 2>/dev/null -servername $2 | openssl x509 -noout -dates
-echo "---------------------------"
-echo "Certificate CN and DNS Info"
-echo "---------------------------"
-echo | openssl s_client -connect $1:443 2>/dev/null -servername $2 | openssl x509 -noout -text | grep DNS:
+    echo "Checking server ${1} for certificate ${2}"
+    echo "---------------------------"
+    echo "Certificate Valid Dates"
+    echo "---------------------------"
+    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 | openssl x509 -noout -dates
+    echo "---------------------------"
+    echo "Certificate CN and DNS Info"
+    echo "---------------------------"
+    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 | openssl x509 -noout -text | grep DNS:
+    echo "---------------------------"
+    echo "Certificate issuer"
+    echo "---------------------------"
+    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 | openssl x509 -noout -issuer
+    echo "---------------------------"
+    echo "Certificate Verify"
+    echo "---------------------------"
+    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 -verify_hostname $1 -verify 2 | grep Verify
 }
 
 
@@ -72,7 +104,7 @@ function ipinfo {
 
 function orginfo {
 	ip=`dig +short $1` | tail -n 1;
-	curl -s https://ipinfo.io/${ip} | jq . ;
+	curl -s https://ipinfo.io/${ip} | jq ;
 }
 
 function curlqa {
