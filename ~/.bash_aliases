@@ -24,13 +24,13 @@ function ddoghostname {
 function dlsite {
 	wget \
 	     --recursive \
-	     --no-clobber \
 	     --page-requisites \
 	     --html-extension \
 	     --convert-links \
 	     --restrict-file-names=windows \
-	     --domains website.org \
 	     --no-parent \
+	     --span-hosts \
+    	     --domains=$1,brookscunningham.com \
 		 $1
 
 }
