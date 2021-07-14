@@ -1,0 +1,7 @@
+{
+    "default_options": [
+      "--style=fruity",
+      "-p=Hh",
+      "--verify=no"
+    ]
+}
