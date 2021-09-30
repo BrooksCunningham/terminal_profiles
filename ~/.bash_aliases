@@ -82,19 +82,19 @@ function chkcrtsni {
     echo "---------------------------"
     echo "Certificate Valid Dates"
     echo "---------------------------"
-    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 | openssl x509 -noout -dates
+    true | openssl s_client -connect $1:443 2>/dev/null -servername $2 | openssl x509 -noout -dates
     echo "---------------------------"
     echo "Certificate CN and DNS Info"
     echo "---------------------------"
-    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 | openssl x509 -noout -text | grep DNS:
+    true | openssl s_client -connect $1:443 2>/dev/null -servername $2 | openssl x509 -noout -text | grep DNS:
     echo "---------------------------"
     echo "Certificate issuer"
     echo "---------------------------"
-    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 | openssl x509 -noout -issuer
+    true | openssl s_client -connect $1:443 2>/dev/null -servername $2 | openssl x509 -noout -issuer
     echo "---------------------------"
     echo "Certificate Verify"
     echo "---------------------------"
-    true | openssl s_client -connect $2:443 2>/dev/null -servername $1 -verify_hostname $1 -verify 2 | grep Verify
+    true | openssl s_client -connect $1:443 2>/dev/null -servername $2 -verify_hostname $2 -verify 2 | grep Verify
 }
 
 
