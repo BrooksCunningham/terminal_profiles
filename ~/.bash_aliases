@@ -49,7 +49,7 @@ function digtxt {
 }
 
 function curlqav {
-        echo "curl -ik -sD - -o /dev/null -w ' time_namelookup:  %{time_namelookup}\n time_connect:  %{time_connect}\n time_appconnect:  %{time_appconnect}\n time_pretransfer:  %{time_pretransfer}\n time_redirect:  %{time_redirect}\n time_starttransfer:  %{time_starttransfer}\n time_total: %{time_total}\n' -H 'host: $1' http://"
+        echo "curl -ik -sD - -o /dev/null -w ' time_namelookup:  %{time_namelookup}\n time_connect:  %{time_connect}\n time_appconnect:  %{time_appconnect}\n time_pretransfer:  %{time_pretransfer}\n time_redirect:  %{time_redirect}\n time_starttransfer:  %{time_starttransfer}\n time_total: %{time_total}\n size_download: %{size_download}\n' -H 'host: $1' http://"
 }
 
 function cnvdate {
