@@ -40,8 +40,9 @@ function nct {
 	nc -vz -w 5 $1 $2
 }
 
-function diga {
-	dig +short $1
+function digshort {
+    echo "digging for `printf $1 | sed 's/^https:\/\///g' | sed 's/\/.*//g'`"
+    dig +short `printf $1 | sed 's/^https:\/\///g' | sed 's/\/.*//g'`
 }
 
 function digtxt {
